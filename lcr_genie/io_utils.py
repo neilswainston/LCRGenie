@@ -13,38 +13,18 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 # pylint: disable=too-many-arguments
 import pandas as pd
 
-FILEPATH = 'output.xlsx'
-
 
 def write(
-    quotes,
-    primer_seqs,
-    fragment_quotes,
-    errors,
-    part_seqs,
-    construct_parts,
-    construct_seqs,
-    target='output.xlsx',
-):
-    '''Write the result of DNA construction plan computations as a spreadsheet.
+        part_seqs,
+        construct_parts,
+        construct_seqs,
+        oligo_seqs,
+        construct_oligos,
+        out_filename='output.xlsx'):
+    '''Write the result of DNA construction plan as a spreadsheet.'''
+    writer = pd.ExcelWriter(out_filename)
 
-    Parameters
-    ----------
-
-    quotes, primer_seqs, fragments_quotes, errors
-      Output of ``compute_all_construct_quotes()`` (see docs of this method)
-
-    part_seqs, construct_parts, construct_seqs
-      Output of ``get_assembly_plan_from_sbol()`` (cf that method's doc)
-
-    target
-      Path to the output file
-    '''
-
-    # WRITE THE CONSTRUCTS PARTS SPREADSHEET
-
-    writer = pd.ExcelWriter(target)
-
+    # construct_parts:
     parts_per_construct = [
         (name, ' + '.join(parts)) for name, parts in construct_parts.items()
     ]
@@ -56,59 +36,36 @@ def write(
         parts_per_construct
     )
 
-    # WRITE THE CONSTRUCT SEQUENCES SPREADSHEET
-
+    # construct_sequences:
     _to_spreadsheet(
         writer,
-        'construct_seqs',
+        'construct_sequences',
         ['construct', 'sequence'],
         construct_seqs.items(),
     )
 
-    # WRITE THE PRIMERS SEQUENCES SPREADSHEET
-
+    # oligo_sequences:
     _to_spreadsheet(
         writer,
-        'primer_seqs',
-        ['primer', 'sequence'],
-        sorted(primer_seqs.items()),
+        'oligo_sequences',
+        ['oligo', 'sequence'],
+        sorted(oligo_seqs.items()),
     )
 
-    # WRITE THE PARTS SEQUENCES SPREADSHEET
-
+    # part_sequences:
     _to_spreadsheet(
         writer,
-        'part_seqs',
+        'part_sequences',
         ['part', 'sequence'],
         sorted(part_seqs.items())
     )
 
-    # WRITE THE PCR_EXTENSIONS SPREADSHEET
-
-    fragments_list = [
-        (
-            fragment,
-            quote.metadata['subject'],
-            ' + '.join(_quote_components_ids(quote)),
-            quote.seq,
-        )
-        for fragment, quote in fragment_quotes.items()
-    ]
-
-    _to_spreadsheet(
-        writer,
-        'fragment_extensions',
-        ['fragment_id', 'part', 'primers', 'fragment_sequence'],
-        fragments_list,
-    )
-
-    # WRITE THE ASSEMBLY PLAN SPREADSHEET
-
+    # assembly_plan:
     assembly_plan = [
         (construct,
-         quote.source.name,
-         ' + '.join(_quote_components_ids(quote)))
-        for construct, quote in quotes.items()
+         'lcr',
+         ' + '.join(construct_parts[construct] + oligos))
+        for construct, oligos in construct_oligos.items()
     ]
 
     _to_spreadsheet(
@@ -117,13 +74,6 @@ def write(
         ['construct', 'method', 'fragments'],
         assembly_plan,
     )
-
-    # WRITE THE ERRORED CONSTRUCTS SPREADSHEET
-    _to_spreadsheet(
-        writer,
-        'errors',
-        ['construct', 'error'],
-        list(errors.items()))
 
     writer.close()
 
