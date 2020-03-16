@@ -12,6 +12,8 @@ from collections import OrderedDict
 
 import sbol
 
+_SO_PLASMID = 'http://identifiers.org/so/SO:0000155'
+
 
 def parse(sbol_doc=None, path=None):
     '''Parse SBOL and extract an assembly plan.
@@ -40,14 +42,17 @@ def parse(sbol_doc=None, path=None):
         sbol_doc.read(path)
 
     parts_seqs = {
-        seq.displayId.replace('_sequence', ''): seq.elements.upper()
-        for seq in sbol_doc.sequences
+        comp_def.displayId: comp_def.sequence.elements.upper()
+        for comp_def in sbol_doc.componentDefinitions
+        if comp_def.sequence
     }
 
     parts_per_construct = [
-        (component.displayId, [c.displayId[:-2] for c in component.components])
-        for component in sbol_doc.componentDefinitions
-        if len(component.components)
+        (comp_def.displayId, [sbol_doc.getComponentDefinition(
+            comp.definition).displayId
+            for comp in comp_def.components])
+        for comp_def in sbol_doc.componentDefinitions
+        if _SO_PLASMID in comp_def.roles
     ]
 
     constructs_seqs = [
