@@ -10,7 +10,7 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 '''
 from collections import OrderedDict
 
-import sbol
+from . import sbol
 
 _SO_PLASMID = 'http://identifiers.org/so/SO:0000155'
 
