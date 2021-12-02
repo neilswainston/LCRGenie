@@ -12,6 +12,7 @@ import sys
 from lcr_genie import io_utils, lcr, sbol_utils
 from .Args import build_args_parser
 
+
 def entry_point():
     '''main method.'''
 
