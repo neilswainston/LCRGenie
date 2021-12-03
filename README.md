@@ -1,5 +1,5 @@
 # LCRGenie
-LCRGenie
+Ligase Chain Reaction
 
 ## Install
 ```bash

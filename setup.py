@@ -4,7 +4,7 @@ from os import path as os_path
 
 ## INFOS ##
 package     = 'lcr_genie'
-descr       = 'Ligase chain reaction'
+descr       = 'Ligase Chain Reaction'
 url         = 'https://github.com/neilswainston/LCRGenie'
 authors     = 'Neil Swainston'
 corr_author = 'neil.swainston@liverpool.ac.uk'
