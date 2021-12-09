@@ -9,7 +9,6 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 @author:  neilswainston
 '''
 from collections import OrderedDict
-
 from sbml2sbol import sbol
 
 _SO_PLASMID = 'http://identifiers.org/so/SO:0000155'
