@@ -7,3 +7,4 @@ dependencies:
   - pandas
   - openpyxl
   - requests
+  - sbml2sbol
