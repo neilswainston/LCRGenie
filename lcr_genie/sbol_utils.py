@@ -9,9 +9,13 @@ To view a copy of this license, visit <http://opensource.org/licenses/MIT/>.
 @author:  neilswainston
 '''
 from collections import OrderedDict
-from sbml2sbol import sbol
+import sbol2 as sbol
 
 _SO_PLASMID = 'http://identifiers.org/so/SO:0000155'
+
+def id_sort(i: iter):
+    """Sort a collection of SBOL objects and/or URIs by identity URI"""
+    return sorted(i, key=lambda x: x.identity if isinstance(x, sbol.Identified) else x)
 
 
 def parse(sbol_doc=None, path=None):
@@ -49,13 +53,13 @@ def parse(sbol_doc=None, path=None):
     parts_per_construct = [
         (comp_def.displayId, [sbol_doc.getComponentDefinition(
             comp.definition).displayId
-            for comp in comp_def.components])
+            for comp in id_sort(comp_def.components)])
         for comp_def in sbol_doc.componentDefinitions
         if _SO_PLASMID in comp_def.roles
     ]
 
     constructs_seqs = [
-        (construct_name, ''.join([parts_seqs[part] for part in parts]))
+        (construct_name, ''.join([parts_seqs[part] for part in id_sort(parts)]))
         for construct_name, parts in parts_per_construct
     ]
 
