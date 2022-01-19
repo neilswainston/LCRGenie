@@ -1,4 +1,4 @@
 openpyxl
 pandas
 biopython
-pysbol2
+sbol2
