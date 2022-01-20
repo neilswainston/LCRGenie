@@ -5,6 +5,8 @@ name: Tests
 
 on:
   push:
+    paths:
+      - '**.py'
   pull_request:
 
 jobs:
