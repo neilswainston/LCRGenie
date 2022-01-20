@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/neilswainston/LCRGenie/tree/1.0.2) (2022-01-20)
+
+[Full Changelog](https://github.com/neilswainston/LCRGenie/compare/1.0.1...1.0.2)
+
+**Merged pull requests:**
+
+- Upgrade to pySBOL2 [\#1](https://github.com/neilswainston/LCRGenie/pull/1) ([jakebeal](https://github.com/jakebeal))
+
 ## [1.0.1](https://github.com/neilswainston/LCRGenie/tree/1.0.1) (2021-12-09)
 
 [Full Changelog](https://github.com/neilswainston/LCRGenie/compare/1.0.0...1.0.1)
